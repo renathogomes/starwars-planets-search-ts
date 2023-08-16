@@ -1,18 +1,18 @@
 import { TableTypes } from '../types';
 
 export function Table({
-  name,
-  rotation_period,
-  orbital_period,
-  diameter,
   climate,
-  gravity,
-  terrain,
-  surface_water,
-  population,
-  films,
   created,
+  diameter,
   edited,
+  films,
+  gravity,
+  name,
+  orbital_period,
+  population,
+  rotation_period,
+  surface_water,
+  terrain,
   url,
 }: TableTypes) {
   return (
