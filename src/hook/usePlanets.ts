@@ -1,14 +1,14 @@
 import { useContext } from 'react';
-import { PlanetsContext } from '../contexts/Context';
+import { PlanetsContext } from '../contexts/ContextProvider';
 
 function usePlanets() {
-  const planets = useContext(PlanetsContext);
+  const context = useContext(PlanetsContext);
 
-  if (!planets) {
-    throw new Error('Planets data not available');
+  if (!context) {
+    throw new Error('PlanetsContext not available');
   }
 
-  return planets;
+  return context.planets;
 }
 
 export default usePlanets;

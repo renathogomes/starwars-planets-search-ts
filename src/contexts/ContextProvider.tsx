@@ -1,4 +1,4 @@
-import { ReactNode, createContext, useEffect, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 
 const url = 'https://swapi.dev/api/planets';
 
@@ -25,22 +25,24 @@ type ContextType = {
 export const PlanetsContext = createContext<ContextType | undefined>(undefined);
 
 type ContextProviderType = {
-  children: ReactNode;
+  children: React.ReactNode;
 };
 
 export function PlanetsProvider({ children }: ContextProviderType) {
-  const [planets, setPlanets] = useState<PlanetData[]>([]);
-
   useEffect(() => {
     const fetchPlanets = async () => {
       const response = await fetch(url);
       const dataJson = await response.json();
-      const data = dataJson.results;
+      const data = await dataJson.results;
       setPlanets(data);
+      console.log(data);
     };
 
     fetchPlanets();
   }, []);
+
+  const [planets, setPlanets] = useState<PlanetData[]>([]);
+  console.log(planets);
 
   return (
     <PlanetsContext.Provider value={ { planets } }>
