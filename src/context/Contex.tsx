@@ -1,19 +1,50 @@
-import { useEffect } from 'react';
+import { ReactNode, createContext, useEffect, useState } from 'react';
 
-export const Context = async () => {
+const url = 'https://swapi.dev/api/planets';
+
+type PlanetData = {
+  climate: string;
+  created: string;
+  diameter: string;
+  edited: string;
+  films: string[];
+  gravity: string;
+  name: string;
+  orbital_period: string;
+  population: string;
+  rotation_period: string;
+  surface_water: string;
+  terrain: string;
+  url: string;
+};
+
+type ContextType = {
+  planets: PlanetData[];
+};
+
+export const PlanetsContext = createContext<ContextType | undefined>(undefined);
+
+type ContextProviderType = {
+  children: ReactNode;
+};
+
+export function PlanetsProvider({ children }: ContextProviderType) {
+  const [planets, setPlanets] = useState<PlanetData[]>([]);
+
   useEffect(() => {
-    const api = async () => {
-      const response = await fetch('https://swapi.dev/api/planets');
+    const fetchPlanets = async () => {
+      const response = await fetch(url);
       const dataJson = await response.json();
       const data = dataJson.results;
-      console.log(data);
+      setPlanets(data);
     };
-    console.log(api());
+
+    fetchPlanets();
   }, []);
 
   return (
-    <p>
-      {  }
-    </p>
+    <PlanetsContext.Provider value={ { planets } }>
+      {children}
+    </PlanetsContext.Provider>
   );
-};
+}

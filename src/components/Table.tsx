@@ -1,52 +1,33 @@
-import { TableTypes } from '../types';
+import { useContext } from 'react';
+import { PlanetsProvider } from '../context/Contex';
 
-export function Table({
-  climate,
-  created,
-  diameter,
-  edited,
-  films,
-  gravity,
-  name,
-  orbital_period,
-  population,
-  rotation_period,
-  surface_water,
-  terrain,
-  url,
-}: TableTypes) {
+function Table() {
+  const planets = useContext(PlanetsProvider);
+
   return (
     <table>
       <thead>
-        <th>Name</th>
-        <th>Rotation Period</th>
-        <th>Orbital Period</th>
-        <th>Diameter</th>
-        <th>Climate</th>
-        <th>Gravity</th>
-        <th>Terrain</th>
-        <th>Surface Water</th>
-        <th>Population</th>
-        <th>Films</th>
-        <th>Created</th>
-        <th>Edited</th>
-        <th>URL</th>
+        <tr>
+          <th>Name</th>
+          <th>Climate</th>
+          <th>Created</th>
+          <th>Diameter</th>
+          {/* Adicione mais colunas aqui conforme necessário */}
+        </tr>
       </thead>
       <tbody>
-        <td>{ name }</td>
-        <td>{ rotation_period }</td>
-        <td>{ orbital_period }</td>
-        <td>{ diameter }</td>
-        <td>{ climate }</td>
-        <td>{ gravity }</td>
-        <td>{ terrain }</td>
-        <td>{ surface_water }</td>
-        <td>{ population }</td>
-        <td>{ films }</td>
-        <td>{ created }</td>
-        <td>{ edited }</td>
-        <td>{ url }</td>
+        {planets.map((planet) => (
+          <tr key={planet.name}>
+            <td>{planet.name}</td>
+            <td>{planet.climate}</td>
+            <td>{planet.created}</td>
+            <td>{planet.diameter}</td>
+            {/* Preencha as células da tabela com os outros campos */}
+          </tr>
+        ))}
       </tbody>
     </table>
   );
 }
+
+export default Table;

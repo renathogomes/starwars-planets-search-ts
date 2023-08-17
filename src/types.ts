@@ -1,4 +1,4 @@
-export type TableTypes = {
+export type PlanetsType = {
   name: string,
   rotation_period: string,
   orbital_period: string,
