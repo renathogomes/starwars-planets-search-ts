@@ -1,8 +1,7 @@
-import { useContext } from 'react';
-import { PlanetsProvider } from '../context/Contex';
+import usePlanets from '../hook/usePlanets';
 
 function Table() {
-  const planets = useContext(PlanetsProvider);
+  const planets = usePlanets();
 
   return (
     <table>
@@ -12,17 +11,15 @@ function Table() {
           <th>Climate</th>
           <th>Created</th>
           <th>Diameter</th>
-          {/* Adicione mais colunas aqui conforme necessário */}
         </tr>
       </thead>
       <tbody>
-        {planets.map((planet) => (
-          <tr key={planet.name}>
+        {planets.map((planet:any) => (
+          <tr key={ planet.name }>
             <td>{planet.name}</td>
             <td>{planet.climate}</td>
             <td>{planet.created}</td>
             <td>{planet.diameter}</td>
-            {/* Preencha as células da tabela com os outros campos */}
           </tr>
         ))}
       </tbody>
