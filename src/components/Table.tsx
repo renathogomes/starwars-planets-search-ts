@@ -7,7 +7,7 @@ function Table() {
   const [filter, setFilter] = useState('');
 
   const test = planets
-    .filter((element) => element.name.toLowerCase());
+    .filter((element) => element.name.toLowerCase().includes(filter.toLowerCase()));
 
   return (
     <>
