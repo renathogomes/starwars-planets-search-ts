@@ -36,7 +36,7 @@ function Table() {
           </tr>
         </thead>
         <tbody>
-          { planets.length < 1 ? <h2>Loading...</h2>
+          { planets.length < 1 ? <tr><td>Loading...</td></tr>
             : test.map((planet) => (
               <tr key={ planet.name }>
                 <td>{planet.name}</td>
