@@ -5,12 +5,42 @@ function Table() {
   const planets = usePlanets();
 
   const [filter, setFilter] = useState('');
+  const [column, setColumn] = useState('');
 
   const test = planets
     .filter((element) => element.name.toLowerCase().includes(filter.toLowerCase()));
 
+  // const lo = 'reNatHo';
+  // console.log(lo.toLocaleLowerCase().includes(lo.toLocaleLowerCase()));
+
   return (
     <>
+      <label htmlFor="column">Colunas:</label>
+      <select
+        id={ column }
+        onChange={ (e) => setColumn(e.target.value) }
+        data-testid="column-filter"
+      >
+        <option value="">population</option>
+        <option value="">orbital_period</option>
+        <option value="">diameter</option>
+        <option value="">rotation_period</option>
+        <option value="">surface_water</option>
+      </select>
+      <label htmlFor="comparison">Comparação:</label>
+      <select
+        id="comparison"
+        data-testid="comparison-filter"
+      >
+        <option value="">maior que</option>
+        <option value="">menor que</option>
+        <option value="">igual a</option>
+      </select>
+      <input
+        type="number"
+        data-testid="value-filter"
+      />
+      <button data-testid="button-filter">Filtrar</button>
       <input
         type="text"
         data-testid="name-filter"
