@@ -13,6 +13,7 @@ export function PlanetsProvider({ children }: ContextProviderType) {
     delete dataJson.residents;
 
     const data = await dataJson.results;
+    console.log(data);
     setPlanets(data);
   };
 

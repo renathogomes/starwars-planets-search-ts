@@ -24,18 +24,15 @@ function Table() {
       },
     ]);
 
-    let result = [];
+    // let result: PlanetType[] = [];
 
-    arrayFilter.forEach((filter: any) => {
-      if (filter.comparison === 'maior que') {
-        result = planets.filter((p) => Number(p[filter.column]) > Number(filter.value));
-      }
-    });
-    setPlanets(result);
+    // arrayFilter.forEach((filter: any) => {
+    //   if (filter.comparison === 'maior que') {
+    //     result = planets.filter((p) => Number(p[column]) > Number(filter.value));
+    //   }
+    // });
+    // setPlanets(result);
   };
-
-  // const lo = 'reNatHo';
-  // console.log(lo.toLocaleLowerCase().includes(lo.toLocaleLowerCase()));
 
   const test = planets
     .filter((element) => element.name.toLowerCase().includes(nameFilter.toLowerCase()));
