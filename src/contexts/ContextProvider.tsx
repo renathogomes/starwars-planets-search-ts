@@ -35,14 +35,12 @@ export function PlanetsProvider({ children }: ContextProviderType) {
       const dataJson = await response.json();
       const data = await dataJson.results;
       setPlanets(data);
-      console.log(data);
     };
 
     fetchPlanets();
   }, []);
 
   const [planets, setPlanets] = useState<PlanetData[]>([]);
-  console.log(planets);
 
   return (
     <PlanetsContext.Provider value={ { planets } }>

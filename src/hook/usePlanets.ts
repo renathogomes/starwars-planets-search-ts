@@ -5,7 +5,7 @@ function usePlanets() {
   const context = useContext(PlanetsContext);
 
   if (!context) {
-    throw new Error('PlanetsContext not available');
+    throw new Error('PlanetsContext não está disponivel');
   }
 
   return context.planets;
