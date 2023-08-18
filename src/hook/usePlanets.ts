@@ -1,14 +1,7 @@
-import { useContext } from 'react';
-import { PlanetsContext } from '../contexts/ContextProvider';
+import { createContext, useContext } from 'react';
+import { ContextType } from '../types';
 
-function usePlanets() {
-  const context = useContext(PlanetsContext);
+export const PlanetsContext = createContext<ContextType>({
+} as ContextType);
 
-  if (!context) {
-    throw new Error('PlanetsContext não está disponivel');
-  }
-
-  return context.planets;
-}
-
-export default usePlanets;
+export const usePlanets = () => useContext(PlanetsContext);

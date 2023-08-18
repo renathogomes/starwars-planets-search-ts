@@ -1,6 +1,4 @@
-import { createContext } from 'react';
-
-type ContextProp = {
+export type PlanetType = {
   name: string,
   rotation_period: string,
   orbital_period: string,
@@ -16,4 +14,12 @@ type ContextProp = {
   url: string,
 };
 
-export const ContextType = createContext({} as ContextProp);
+export type ContextProviderType = {
+  children: React.ReactNode;
+};
+
+export type ContextType = {
+  planets: PlanetType[];
+  fetchPlanets: () => void;
+  setPlanets: React.Dispatch<React.SetStateAction<never[]>>;
+};

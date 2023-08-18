@@ -1,51 +1,96 @@
-import { useState } from 'react';
-import usePlanets from '../hook/usePlanets';
+import { useEffect, useState } from 'react';
+import { usePlanets } from '../hook/usePlanets';
 
 function Table() {
-  const planets = usePlanets();
+  const { planets, fetchPlanets, setPlanets } = usePlanets();
 
-  const [filter, setFilter] = useState('');
+  const [valueFilter, setValueFilter] = useState('');
+  const [nameFilter, setNameFilter] = useState('');
   const [column, setColumn] = useState('');
+  const [filterComparison, setFilterComparison] = useState('');
 
-  const test = planets
-    .filter((element) => element.name.toLowerCase().includes(filter.toLowerCase()));
+  const [arrayFilter, setArrayFilter] = useState([] as any);
+
+  useEffect(() => {
+    fetchPlanets();
+  }, [fetchPlanets]);
+
+  const handleSubmit = (e:React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setArrayFilter([...arrayFilter,
+      { column,
+        comparison: filterComparison,
+        value: valueFilter,
+      },
+    ]);
+
+    let result = [];
+
+    arrayFilter.forEach((filter: any) => {
+      if (filter.comparison === 'maior que') {
+        result = planets.filter((p) => Number(p[filter.column]) > Number(filter.value));
+      }
+    });
+    setPlanets(result);
+  };
 
   // const lo = 'reNatHo';
   // console.log(lo.toLocaleLowerCase().includes(lo.toLocaleLowerCase()));
 
+  const test = planets
+    .filter((element) => element.name.toLowerCase().includes(nameFilter.toLowerCase()));
+
   return (
     <>
-      <label htmlFor="column">Colunas:</label>
-      <select
-        id={ column }
-        onChange={ (e) => setColumn(e.target.value) }
-        data-testid="column-filter"
-      >
-        <option value="">population</option>
-        <option value="">orbital_period</option>
-        <option value="">diameter</option>
-        <option value="">rotation_period</option>
-        <option value="">surface_water</option>
-      </select>
-      <label htmlFor="comparison">Comparação:</label>
-      <select
-        id="comparison"
-        data-testid="comparison-filter"
-      >
-        <option value="">maior que</option>
-        <option value="">menor que</option>
-        <option value="">igual a</option>
-      </select>
+      <form onSubmit={ handleSubmit }>
+        <label htmlFor="column">Colunas:</label>
+        <select
+          id="column"
+          name="column"
+          value={ column }
+          onChange={ (e) => setColumn(e.target.value) }
+          data-testid="column-filter"
+        >
+          <option value="population">population</option>
+          <option value="orbital_period">orbital_period</option>
+          <option value="diameter">diameter</option>
+          <option value="rotation_period">rotation_period</option>
+          <option value="surface_water">surface_water</option>
+        </select>
+        <label htmlFor="comparison">Comparação:</label>
+        <select
+          id="comparison"
+          value={ filterComparison }
+          data-testid="comparison-filter"
+          onChange={ (e) => setFilterComparison(e.target.value) }
+        >
+          <option value="maior que">maior que</option>
+          <option value="menor que">menor que</option>
+          <option value="igual a">igual a</option>
+        </select>
+        <label htmlFor="value">Valor:</label>
+        <input
+          id="value"
+          type="number"
+          data-testid="value-filter"
+          value={ valueFilter }
+          onChange={ (e) => setValueFilter(e.target.value) }
+        />
+        <button
+          type="submit"
+          data-testid="button-filter"
+        >
+          Filtrar
+
+        </button>
+      </form>
+      <label htmlFor="nameFilter">Nome:</label>
       <input
-        type="number"
-        data-testid="value-filter"
-      />
-      <button data-testid="button-filter">Filtrar</button>
-      <input
+        id="nameFilter"
         type="text"
+        value={ nameFilter }
         data-testid="name-filter"
-        value={ filter }
-        onChange={ (e) => setFilter(e.target.value) }
+        onChange={ (e) => setNameFilter(e.target.value) }
       />
       <table>
         <thead>
