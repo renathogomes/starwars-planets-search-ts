@@ -14,7 +14,7 @@ function Table() {
 
   useEffect(() => {
     fetchPlanets();
-  }, [fetchPlanets]);
+  }, []);
 
   // const columns = [
   //   'population',
@@ -29,24 +29,22 @@ function Table() {
 
   const handleFilter = (filters: any) => {
     let result: PlanetType[] = planets;
+    const arrayOf = [...filters];
 
-    console.log(filters);
-
-    filters.forEach((filter: any) => {
+    arrayOf.forEach((filter: any) => {
+      const { value } = filter;
       switch (filter.comparison) {
         case 'maior que':
-          result = arrayFilter
-            .filter((p: any) => Number(p[arrayFilter.column]) > Number(filter.value));
-          console.log(filter.value);
+          result = result.filter((p: any) => Number(p[column]) > Number(value));
           break;
         case 'menor que':
           result = result.filter(
-            (p: any) => Number(p[arrayFilter.column]) < Number(filter.value),
+            (p: any) => Number(p[column]) < Number(value),
           );
           break;
         case 'igual a':
           result = result.filter(
-            (p: any) => Number(p[arrayFilter.column]) === Number(filter.value),
+            (p: any) => Number(p[column]) === Number(value),
           );
           break;
         default:
