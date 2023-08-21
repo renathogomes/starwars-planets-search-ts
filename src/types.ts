@@ -21,5 +21,5 @@ export type ContextProviderType = {
 export type ContextType = {
   planets: PlanetType[];
   fetchPlanets: () => void;
-  setPlanets: React.Dispatch<React.SetStateAction<never[]>>;
+  setPlanets: React.Dispatch<React.SetStateAction<PlanetType[]>>;
 };

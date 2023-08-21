@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { ContextProviderType } from '../types';
+import { ContextProviderType, PlanetType } from '../types';
 import { PlanetsContext } from '../hook/usePlanets';
 
 const url = 'https://swapi.dev/api/planets';
 
 export function PlanetsProvider({ children }: ContextProviderType) {
-  const [planets, setPlanets] = useState([]);
+  const [planets,
+    setPlanets] = useState<PlanetType[]>([]);
 
   const fetchPlanets = async () => {
     const response = await fetch(url);
@@ -13,7 +14,6 @@ export function PlanetsProvider({ children }: ContextProviderType) {
     delete dataJson.residents;
 
     const data = await dataJson.results;
-    console.log(data);
     setPlanets(data);
   };
 

@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
 import { usePlanets } from '../hook/usePlanets';
+import { PlanetType } from '../types';
 
 function Table() {
   const { planets, fetchPlanets, setPlanets } = usePlanets();
 
-  const [valueFilter, setValueFilter] = useState('');
+  const [valueFilter, setValueFilter] = useState(0);
   const [nameFilter, setNameFilter] = useState('');
-  const [column, setColumn] = useState('');
-  const [filterComparison, setFilterComparison] = useState('');
+  const [column, setColumn] = useState('population');
+  const [filterComparison, setFilterComparison] = useState('maior que');
 
   const [arrayFilter, setArrayFilter] = useState([] as any);
 
@@ -15,27 +16,67 @@ function Table() {
     fetchPlanets();
   }, [fetchPlanets]);
 
-  const handleSubmit = (e:React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setArrayFilter([...arrayFilter,
-      { column,
-        comparison: filterComparison,
-        value: valueFilter,
-      },
-    ]);
+  // const columns = [
+  //   'population',
+  //   'orbital_period',
+  //   'diameter',
+  //   'rotation_period',
+  //   'surface_water',
+  // ];
 
-    // let result: PlanetType[] = [];
+  const dataPlanets = planets
+    .filter((element) => element.name.toLowerCase().includes(nameFilter.toLowerCase()));
 
-    // arrayFilter.forEach((filter: any) => {
-    //   if (filter.comparison === 'maior que') {
-    //     result = planets.filter((p) => Number(p[column]) > Number(filter.value));
-    //   }
-    // });
-    // setPlanets(result);
+  const handleFilter = (filters: any) => {
+    let result: PlanetType[] = planets;
+
+    console.log(filters);
+
+    filters.forEach((filter: any) => {
+      switch (filter.comparison) {
+        case 'maior que':
+          result = arrayFilter
+            .filter((p: any) => Number(p[arrayFilter.column]) > Number(filter.value));
+          console.log(filter.value);
+          break;
+        case 'menor que':
+          result = result.filter(
+            (p: any) => Number(p[arrayFilter.column]) < Number(filter.value),
+          );
+          break;
+        case 'igual a':
+          result = result.filter(
+            (p: any) => Number(p[arrayFilter.column]) === Number(filter.value),
+          );
+          break;
+        default:
+          break;
+      }
+    });
+    setPlanets(result);
   };
 
-  const test = planets
-    .filter((element) => element.name.toLowerCase().includes(nameFilter.toLowerCase()));
+  const handleSubmit = (e:React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setArrayFilter((state: any) => {
+      handleFilter([...state,
+        { column,
+          comparison: filterComparison,
+          value: valueFilter,
+        },
+      ]);
+      return (
+        [...state,
+          { column,
+            comparison: filterComparison,
+            value: valueFilter,
+          },
+        ]
+      );
+    });
+  };
+
+  console.log(arrayFilter);
 
   return (
     <>
@@ -71,14 +112,10 @@ function Table() {
           type="number"
           data-testid="value-filter"
           value={ valueFilter }
-          onChange={ (e) => setValueFilter(e.target.value) }
+          onChange={ (e) => setValueFilter(e.target.value as unknown as number) }
         />
-        <button
-          type="submit"
-          data-testid="button-filter"
-        >
+        <button type="submit" data-testid="button-filter">
           Filtrar
-
         </button>
       </form>
       <label htmlFor="nameFilter">Nome:</label>
@@ -109,7 +146,7 @@ function Table() {
         </thead>
         <tbody>
           { planets.length < 1 ? <tr><td>Loading...</td></tr>
-            : test.map((planet) => (
+            : dataPlanets.map((planet) => (
               <tr key={ planet.name }>
                 <td>{planet.name}</td>
                 <td>{planet.rotation_period}</td>
