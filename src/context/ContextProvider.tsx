@@ -5,8 +5,8 @@ import { PlanetsContext } from '../hook/usePlanets';
 const url = 'https://swapi.dev/api/planets';
 
 export function PlanetsProvider({ children }: ContextProviderType) {
-  const [planets,
-    setPlanets] = useState<PlanetType[]>([]);
+  const [planets, setPlanets] = useState<PlanetType[]>([]);
+  // const [globalFilter, setGlobalFilter] = useState<PlanetType[]>([]);
 
   const fetchPlanets = async () => {
     const response = await fetch(url);
@@ -18,7 +18,13 @@ export function PlanetsProvider({ children }: ContextProviderType) {
   };
 
   return (
-    <PlanetsContext.Provider value={ { planets, fetchPlanets, setPlanets } }>
+    <PlanetsContext.Provider
+      value={ {
+        planets,
+        fetchPlanets,
+        setPlanets,
+      } }
+    >
       {children}
     </PlanetsContext.Provider>
   );

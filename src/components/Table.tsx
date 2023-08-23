@@ -16,35 +16,28 @@ function Table() {
     fetchPlanets();
   }, []);
 
-  // const columns = [
-  //   'population',
-  //   'orbital_period',
-  //   'diameter',
-  //   'rotation_period',
-  //   'surface_water',
-  // ];
-
   const dataPlanets = planets
     .filter((element) => element.name.toLowerCase().includes(nameFilter.toLowerCase()));
 
   const handleFilter = (filters: any) => {
     let result: PlanetType[] = planets;
     const arrayOf = [...filters];
+    console.log(arrayOf);
 
     arrayOf.forEach((filter: any) => {
-      const { value } = filter;
       switch (filter.comparison) {
         case 'maior que':
-          result = result.filter((p: any) => Number(p[column]) > Number(value));
+          result = result
+            .filter((p: any) => Number(p[filter.column]) > Number(filter.value));
           break;
         case 'menor que':
           result = result.filter(
-            (p: any) => Number(p[column]) < Number(value),
+            (p: any) => Number(p[filter.column]) < Number(filter.value),
           );
           break;
         case 'igual a':
           result = result.filter(
-            (p: any) => Number(p[column]) === Number(value),
+            (p: any) => Number(p[filter.column]) === Number(filter.value),
           );
           break;
         default:
@@ -74,7 +67,11 @@ function Table() {
     });
   };
 
-  console.log(arrayFilter);
+  const handleDelete = () => {
+    const updatedFilters = arrayFilter.filter((data:any) => data);
+    console.log(updatedFilters);
+    setArrayFilter(updatedFilters);
+  };
 
   return (
     <>
@@ -124,6 +121,15 @@ function Table() {
         data-testid="name-filter"
         onChange={ (e) => setNameFilter(e.target.value) }
       />
+
+      { arrayFilter.map((multFilter: any, index: number) => (
+        <ul key={ index }>
+          <li>{ `${multFilter.column} ${multFilter.comparison} ${multFilter.value}` }</li>
+          <button onClick={ () => handleDelete() }>
+            Delete
+          </button>
+        </ul>
+      ))}
       <table>
         <thead>
           <tr>

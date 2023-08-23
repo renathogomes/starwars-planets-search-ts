@@ -22,4 +22,5 @@ export type ContextType = {
   planets: PlanetType[];
   fetchPlanets: () => void;
   setPlanets: React.Dispatch<React.SetStateAction<PlanetType[]>>;
+  // setGlobalFilter: React.Dispatch<React.SetStateAction<PlanetType[]>>
 };
