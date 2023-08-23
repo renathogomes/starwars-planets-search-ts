@@ -11,6 +11,13 @@ function Table() {
   const [filterComparison, setFilterComparison] = useState('maior que');
 
   const [arrayFilter, setArrayFilter] = useState([] as any);
+  const [arrayColumn, setArrayColumn] = useState([
+    'population',
+    'orbital_period',
+    'diameter',
+    'rotation_period',
+    'surface_water',
+  ]);
 
   useEffect(() => {
     fetchPlanets();
@@ -21,19 +28,8 @@ function Table() {
 
   const handleFilter = (filters: any) => {
     let result: PlanetType[] = planets;
-    const arrayOf = [...filters];
-    console.log(arrayOf);
 
-    const noRepetition = arrayOf.reduce((acc, currValue) => {
-      if (!acc.includes(currValue)) {
-        acc.push(currValue);
-      }
-      return acc;
-    }, []);
-
-    console.log(noRepetition);
-
-    noRepetition.forEach((filter: any) => {
+    filters.forEach((filter: any) => {
       switch (filter.comparison) {
         case 'maior que':
           result = result
@@ -54,7 +50,10 @@ function Table() {
       }
     });
     setPlanets(result);
-    setArrayFilter(noRepetition);
+
+    setArrayFilter([...arrayFilter, ...filters]);
+
+    setArrayColumn(arrayColumn.filter((filt:any) => filt !== filters[0].column));
   };
 
   const handleSubmit = (e:React.FormEvent<HTMLFormElement>) => {
@@ -65,7 +64,13 @@ function Table() {
         value: valueFilter,
       },
     ]);
+    if (arrayColumn.length > 1) setColumn(arrayColumn[1]);
   };
+
+  const handleClick = (index:string) => {
+    setArrayFilter(arrayFilter.filter((filt:any) => filt.column !== index));
+  };
+
   return (
     <>
       <form onSubmit={ handleSubmit }>
@@ -77,11 +82,16 @@ function Table() {
           onChange={ (e) => setColumn(e.target.value) }
           data-testid="column-filter"
         >
-          <option value="population">population</option>
-          <option value="orbital_period">orbital_period</option>
-          <option value="diameter">diameter</option>
-          <option value="rotation_period">rotation_period</option>
-          <option value="surface_water">surface_water</option>
+          { arrayColumn.map((columnOption) => (
+            <option
+              key={ columnOption }
+              value={ columnOption }
+              data-testid={ columnOption }
+            >
+              {columnOption}
+
+            </option>
+          ))}
         </select>
         <label htmlFor="comparison">Comparação:</label>
         <select
@@ -102,7 +112,10 @@ function Table() {
           value={ valueFilter }
           onChange={ (e) => setValueFilter(e.target.value as unknown as number) }
         />
-        <button type="submit" data-testid="button-filter">
+        <button
+          type="submit"
+          data-testid="button-filter"
+        >
           Filtrar
         </button>
       </form>
@@ -116,12 +129,17 @@ function Table() {
       />
 
       { arrayFilter.map((multFilter: any, index: number) => (
-        <ul key={ index }>
-          <li>{ `${multFilter.column} ${multFilter.comparison} ${multFilter.value}` }</li>
-          <button>
-            Delete
+
+        <li key={ index } data-testid="filter">
+          { `${multFilter.column} ${multFilter.comparison} ${multFilter.value}` }
+          <button
+            data-testid="button-remove-filters"
+            onClick={ () => handleClick(multFilter.column) }
+          >
+            X
           </button>
-        </ul>
+        </li>
+
       ))}
       <table>
         <thead>
