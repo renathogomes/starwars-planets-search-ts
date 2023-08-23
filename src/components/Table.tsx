@@ -24,7 +24,16 @@ function Table() {
     const arrayOf = [...filters];
     console.log(arrayOf);
 
-    arrayOf.forEach((filter: any) => {
+    const noRepetition = arrayOf.reduce((acc, currValue) => {
+      if (!acc.includes(currValue)) {
+        acc.push(currValue);
+      }
+      return acc;
+    }, []);
+
+    console.log(noRepetition);
+
+    noRepetition.forEach((filter: any) => {
       switch (filter.comparison) {
         case 'maior que':
           result = result
@@ -45,34 +54,18 @@ function Table() {
       }
     });
     setPlanets(result);
+    setArrayFilter(noRepetition);
   };
 
   const handleSubmit = (e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setArrayFilter((state: any) => {
-      handleFilter([...state,
-        { column,
-          comparison: filterComparison,
-          value: valueFilter,
-        },
-      ]);
-      return (
-        [...state,
-          { column,
-            comparison: filterComparison,
-            value: valueFilter,
-          },
-        ]
-      );
-    });
+    handleFilter([
+      { column,
+        comparison: filterComparison,
+        value: valueFilter,
+      },
+    ]);
   };
-
-  const handleDelete = () => {
-    const updatedFilters = arrayFilter.filter((data:any) => data);
-    console.log(updatedFilters);
-    setArrayFilter(updatedFilters);
-  };
-
   return (
     <>
       <form onSubmit={ handleSubmit }>
@@ -125,7 +118,7 @@ function Table() {
       { arrayFilter.map((multFilter: any, index: number) => (
         <ul key={ index }>
           <li>{ `${multFilter.column} ${multFilter.comparison} ${multFilter.value}` }</li>
-          <button onClick={ () => handleDelete() }>
+          <button>
             Delete
           </button>
         </ul>
