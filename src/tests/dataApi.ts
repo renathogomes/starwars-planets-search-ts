@@ -1,4 +1,4 @@
-const dataApi = {
+export const dataApi = {
     count: 60, 
     next: "https://swapi.dev/api/planets/?page=2", 
     previous: null, 
