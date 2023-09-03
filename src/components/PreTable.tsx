@@ -3,6 +3,11 @@ import { usePlanets } from '../hook/usePlanets';
 import { PlanetType } from '../types';
 import Table from './Table';
 
+type SortingType = {
+  column: string,
+  sort: string,
+};
+
 function PreTable() {
   const { planets, fetchPlanets, setPlanets } = usePlanets();
 
@@ -11,9 +16,8 @@ function PreTable() {
   const [column, setColumn] = useState('population');
   const [filterComparison, setFilterComparison] = useState('maior que');
 
-  const [sorting, setSorting] = useState({ column: 'population', sort: 'ASC' });
-
-  console.log(sorting);
+  const [sorting,
+    setSorting] = useState<SortingType>({ column: 'population', sort: 'ASC' });
 
   const [arrayFilter, setArrayFilter] = useState([] as any);
 
@@ -65,8 +69,6 @@ function PreTable() {
     }
   }, [arrayFilter]);
 
-  console.log(planets, 'bbbbb');
-
   const handleFilter = () => {
     setArrayFilter([...arrayFilter,
       { column,
@@ -88,8 +90,8 @@ function PreTable() {
     setArrayColumn(arrayColumn.filter((prevColumn:any) => [...prevColumn, index]));
   };
 
-  const handleSort = () => {
-    const sortedPlanets = [...planets].sort((a:any, b:any) => {
+  const sortPlanets = () => {
+    const sortedPlanets = [...planets].sort((a, b) => {
       const columnA = a[sorting.column];
       const columnB = b[sorting.column];
 
@@ -106,6 +108,11 @@ function PreTable() {
     setPlanets(sortedPlanets);
   };
 
+  const handleSort = (selectedColumn: string, selectedSort: string) => {
+    setSorting({ column: selectedColumn, sort: selectedSort });
+    sortPlanets();
+  };
+
   return (
     <>
       <form onSubmit={ handleSubmit }>
@@ -114,7 +121,7 @@ function PreTable() {
           id="column"
           name="column"
           value={ column }
-          onChange={ (e) => setColumn(e.target.value) }
+          onChange={ (e) => setSorting({ ...sorting, column: e.target.value }) }
           data-testid="column-filter"
         >
           { arrayColumn.map((columnOption) => (
@@ -178,6 +185,8 @@ function PreTable() {
       <Table
         planets={ planets }
         dataPlanets={ dataPlanets }
+        sorting={ sorting }
+        handleSort={ handleSort }
       />
     </>
 
