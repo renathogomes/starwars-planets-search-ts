@@ -92,6 +92,7 @@ function PreTable() {
 
   const sortPlanets = () => {
     const sortedPlanets = [...planets].sort((a, b) => {
+      console.log(planets);
       const columnA = a[sorting.column];
       const columnB = b[sorting.column];
 
