@@ -11,6 +11,7 @@ function Table() {
   const [filterComparison, setFilterComparison] = useState('maior que');
 
   const [arrayFilter, setArrayFilter] = useState([] as any);
+
   const [arrayColumn, setArrayColumn] = useState([
     'population',
     'orbital_period',
@@ -24,51 +25,61 @@ function Table() {
   }, []);
 
   const dataPlanets = planets
-    .filter((element) => element.name.toLowerCase().includes(nameFilter.toLowerCase()));
+    .filter((element) => element.name
+      .toLowerCase()
+      .includes(nameFilter.toLowerCase()));
 
-  const handleFilter = (filters: any) => {
+  useEffect(() => {
     let result: PlanetType[] = planets;
+    console.log(arrayFilter, 'aaaa');
 
-    filters.forEach((filter: any) => {
-      switch (filter.comparison) {
-        case 'maior que':
-          result = result
-            .filter((p: any) => Number(p[filter.column]) > Number(filter.value));
-          break;
-        case 'menor que':
-          result = result.filter(
-            (p: any) => Number(p[filter.column]) < Number(filter.value),
-          );
-          break;
-        case 'igual a':
-          result = result.filter(
-            (p: any) => Number(p[filter.column]) === Number(filter.value),
-          );
-          break;
-        default:
-          break;
-      }
-    });
-    setPlanets(result);
+    if (!arrayFilter.length) {
+      setPlanets(planets);
+    } else {
+      arrayFilter.forEach((filter: any) => {
+        switch (filter.comparison) {
+          case 'maior que':
+            result = result
+              .filter((p: any) => Number(p[filter.column]) > Number(filter.value));
+            break;
+          case 'menor que':
+            result = result.filter(
+              (p: any) => Number(p[filter.column]) < Number(filter.value),
+            );
+            break;
+          case 'igual a':
+            result = result.filter(
+              (p: any) => Number(p[filter.column]) === Number(filter.value),
+            );
+            break;
+          default:
+            break;
+        }
+        setPlanets(result);
+      });
+    }
+  }, [arrayFilter]);
+  console.log(planets, 'bbbbb');
 
-    setArrayFilter([...arrayFilter, ...filters]);
+  const handleFilter = () => {
+    setArrayFilter([...arrayFilter,
+      { column,
+        comparison: filterComparison,
+        value: valueFilter,
+      }]);
 
-    setArrayColumn(arrayColumn.filter((filt:any) => filt !== filters[0].column));
+    setArrayColumn(arrayColumn.filter((filt:any) => filt !== column));
   };
 
   const handleSubmit = (e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    handleFilter([
-      { column,
-        comparison: filterComparison,
-        value: valueFilter,
-      },
-    ]);
+    handleFilter();
     if (arrayColumn.length > 1) setColumn(arrayColumn[1]);
   };
 
-  const handleClick = (index:string) => {
+  const handleClickRemove = (index:string) => {
     setArrayFilter(arrayFilter.filter((filt:any) => filt.column !== index));
+    setArrayColumn(arrayColumn.filter((prevColumn:any) => [...prevColumn, index]));
   };
 
   return (
@@ -134,7 +145,7 @@ function Table() {
           { `${multFilter.column} ${multFilter.comparison} ${multFilter.value}` }
           <button
             data-testid="button-remove-filters"
-            onClick={ () => handleClick(multFilter.column) }
+            onClick={ () => handleClickRemove(multFilter.column) }
           >
             X
           </button>

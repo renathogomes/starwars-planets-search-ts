@@ -41,6 +41,21 @@ describe('Todos os testes da aplicação', () => {
     expect(elementWithTestId).toBeInTheDocument();
     });
 
+    test('verifica se os dados da api são renderizados na tela', async () => {
+      render(<PlanetsProvider><App /></PlanetsProvider>)
+      const columnSelect = screen.getByLabelText('Colunas:');
+      const comparisonSelect = screen.getByLabelText('Comparação:');
+      const valueInput = screen.getByLabelText('Valor:');
+  
+      userEvent.selectOptions(columnSelect, 'population');
+      userEvent.selectOptions(comparisonSelect, 'maior que');
+      userEvent.type(valueInput, '');
+      await waitFor(() => {
+        const resultElement = screen.getByText('Tatooine');
+        expect(resultElement).toBeInTheDocument();
+      })
+    });
+
   test('verifica se "Tatooine" é exibido quando Coluna é "population", Comparação é "maior que" e Valor é "10000"', async () => {
     render(<PlanetsProvider><App /></PlanetsProvider>)
     const columnSelect = screen.getByLabelText('Colunas:');
@@ -51,8 +66,13 @@ describe('Todos os testes da aplicação', () => {
     userEvent.selectOptions(comparisonSelect, 'maior que');
     userEvent.type(valueInput, '10000');
     await waitFor(() => {
-      const resultElement = screen.getByText('Tatooine');
-      expect(resultElement).toBeInTheDocument();
+      const tatooineElement = screen.getByText('Tatooine');
+      const nabooElement = screen.getByText('Naboo');
+      const dagobahElement = screen.getByText('Dagobah');
+
+      expect(tatooineElement).toBeInTheDocument();
+      expect(nabooElement).toBeInTheDocument();
+      expect(dagobahElement).toBeInTheDocument();
     })
   });
 
@@ -67,6 +87,81 @@ describe('Todos os testes da aplicação', () => {
     userEvent.type(valueInput, '18');
     await waitFor(() => {
       const resultElement = screen.getByText('Bespin');
+      expect(resultElement).toBeInTheDocument();
+    })
+  });
+
+  test('verifica se ao digitar a letra "d" em Nome, as palavras "Alderaan", "Dagobah" e "Endor" são renderizadas', async () => {
+    render(<PlanetsProvider><App /></PlanetsProvider>)
+   
+    const nameSelect = screen.getByLabelText('Nome:');
+    
+    userEvent.type(nameSelect, 'd');
+    
+    await waitFor(() => {
+      const resultAlderaan = screen.getByText('Alderaan');
+      const resultDagobah = screen.getByText('Dagobah');
+      const resultEndor = screen.getByText('Endor');
+
+      expect(resultAlderaan).toBeInTheDocument();
+      expect(resultDagobah).toBeInTheDocument();
+      expect(resultEndor).toBeInTheDocument();
+    })
+  });
+
+  test('verifica se ao escolher a coluna "population", essa opção desaparece', () => {
+    render(<PlanetsProvider><App /></PlanetsProvider>)
+   
+    const columnSelect = screen.getByLabelText('Colunas:'); 
+    const filterButton = screen.getByTestId('button-filter');
+    
+    expect(screen.getByText('population')).toBeInTheDocument()
+    
+    userEvent.selectOptions(columnSelect, 'population');
+
+    userEvent.click(filterButton);
+
+    expect(screen.queryByText('population')).not.toBeInTheDocument();
+  });
+
+  test('verifica se aparece a mensagem de "Loading..." na tela antes das informações da api serem renderizadas', async () => {
+    render(<PlanetsProvider><App /></PlanetsProvider>)
+    const loadingText = screen.getByText('Loading...');
+    expect(loadingText).toBeInTheDocument();
+
+    await waitFor(() => {
+      const resultElement = screen.getByText('Tatooine');
+      expect(resultElement).toBeInTheDocument();
+      expect(loadingText).not.toBeInTheDocument();
+    })
+    });
+  
+  test('verifica se "Tatooine" é exibido quando a coluna "diameter" é "igual a" "10465"', async () => {
+    render(<PlanetsProvider><App /></PlanetsProvider>)
+    const columnSelect = screen.getByLabelText('Colunas:');
+    const comparisonSelect = screen.getByLabelText('Comparação:');
+    const valueInput = screen.getByLabelText('Valor:');
+  
+    userEvent.selectOptions(columnSelect, 'diameter');
+    userEvent.selectOptions(comparisonSelect, 'igual a');
+    userEvent.type(valueInput, '10465');
+    await waitFor(() => {
+      const resultElement = screen.getByText('Tatooine');
+      expect(resultElement).toBeInTheDocument();
+    })
+  });
+
+  test('verifica se "Naboo" é exibido quando a coluna "surface_water" é "igual a" "12"', async () => {
+    render(<PlanetsProvider><App /></PlanetsProvider>)
+    const columnSelect = screen.getByLabelText('Colunas:');
+    const comparisonSelect = screen.getByLabelText('Comparação:');
+    const valueInput = screen.getByLabelText('Valor:');
+  
+    userEvent.selectOptions(columnSelect, 'surface_water');
+    userEvent.selectOptions(comparisonSelect, 'igual a');
+    userEvent.type(valueInput, '12');
+    await waitFor(() => {
+      const resultElement = screen.getByText('Naboo');
       expect(resultElement).toBeInTheDocument();
     })
   });
