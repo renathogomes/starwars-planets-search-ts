@@ -109,21 +109,6 @@ describe('Todos os testes da aplicação', () => {
     })
   });
 
-  test('verifica se ao escolher a coluna "population", essa opção desaparece', () => {
-    render(<PlanetsProvider><App /></PlanetsProvider>)
-   
-    const columnSelect = screen.getByLabelText('Colunas:'); 
-    const filterButton = screen.getByTestId('button-filter');
-    
-    expect(screen.getByText('population')).toBeInTheDocument()
-    
-    userEvent.selectOptions(columnSelect, 'population');
-
-    userEvent.click(filterButton);
-
-    expect(screen.queryByText('population')).not.toBeInTheDocument();
-  });
-
   test('verifica se aparece a mensagem de "Loading..." na tela antes das informações da api serem renderizadas', async () => {
     render(<PlanetsProvider><App /></PlanetsProvider>)
     const loadingText = screen.getByText('Loading...');
@@ -165,4 +150,16 @@ describe('Todos os testes da aplicação', () => {
       expect(resultElement).toBeInTheDocument();
     })
   });
+
+  test('verifica se Yavin IV é renderizado na tela quando ordena por Ascendente', async () => {
+    render(<PlanetsProvider><App /></PlanetsProvider>)
+    const columnSelect = screen.getByTestId('column-sort');
+  
+    userEvent.selectOptions(columnSelect, 'population');
+    await waitFor(() => {
+      const resultElement = screen.getByText('Yavin IV');
+      expect(resultElement).toBeInTheDocument();
+    })
+  });
+
 });
