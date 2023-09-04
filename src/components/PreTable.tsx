@@ -197,7 +197,6 @@ function PreTable() {
         handleSort={ handleSort }
       />
     </>
-
   );
 }
 
