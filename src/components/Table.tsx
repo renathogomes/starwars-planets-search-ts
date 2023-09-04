@@ -19,54 +19,50 @@ function Table({ planets, dataPlanets, sorting, handleSort }: PropsTable) {
   return (
     <table>
       <thead>
-        <tr>
-          <th>
-            <label htmlFor="columnSort">Ordenar por:</label>
-            <select
-              id="columnSort"
-              value={ sorting.column }
-              onChange={ (e) => handleSort(e.target.value, sorting.sort) }
+        <label htmlFor="columnSort">Ordenar por:</label>
+        <select
+          id="columnSort"
+          value={ sorting.column }
+          onChange={ (e) => handleSort(e.target.value, sorting.sort) }
               // data-testid="column-sort-select"
-              data-testid="column-sort"
+          data-testid="column-sort"
+        >
+          {testOption.map((option) => (
+            <option
+              key={ option }
+              value={ option }
             >
-              {testOption.map((option) => (
-                <option
-                  key={ option }
-                  value={ option }
-                >
-                  { option }
-                </option>))}
+              { option }
+            </option>))}
 
-            </select>
-            <label htmlFor="asc">Ascendente</label>
-            <input
-              id="asc"
-              type="radio"
-              value="ASC"
-              checked={ sorting.sort === 'ASC' }
-              onChange={ () => handleSort(sorting.column, 'ASC') }
-              data-testid="column-sort-input-asc"
-            />
-            <label htmlFor="asc">Descendente</label>
-            <input
-              id="desc"
-              type="radio"
-              value="DESC"
-              checked={ sorting.sort === 'DESC' }
-              onChange={ () => handleSort(sorting.column, 'DESC') }
-              data-testid="column-sort-input-desc"
-            />
+        </select>
+        <label htmlFor="asc">Ascendente</label>
+        <input
+          id="asc"
+          type="radio"
+          value="ASC"
+          checked={ sorting.sort === 'ASC' }
+          onChange={ () => handleSort(sorting.column, 'ASC') }
+          data-testid="column-sort-input-asc"
+        />
+        <label htmlFor="asc">Descendente</label>
+        <input
+          id="desc"
+          type="radio"
+          value="DESC"
+          checked={ sorting.sort === 'DESC' }
+          onChange={ () => handleSort(sorting.column, 'DESC') }
+          data-testid="column-sort-input-desc"
+        />
 
-            <button
-              type="button"
-              onClick={ () => handleSort(sorting.column, sorting.sort === 'ASC'
-                ? 'DESC' : 'ASC') }
-              data-testid="column-sort-button"
-            >
-              Ordenar
-            </button>
-          </th>
-        </tr>
+        <button
+          type="button"
+          onClick={ () => handleSort(sorting.column, sorting.sort === 'ASC'
+            ? 'DESC' : 'ASC') }
+          data-testid="column-sort-button"
+        >
+          Ordenar
+        </button>
         <tr>
           <th>Name</th>
           <th>Rotation Period</th>
