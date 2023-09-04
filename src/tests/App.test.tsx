@@ -210,24 +210,23 @@ describe('Todos os testes da aplicação', () => {
     })
   });
 
-});
-
-test('Botão "Remover Filtros" funciona corretamente', async () => {
-  render(<PlanetsProvider><App /></PlanetsProvider>)
-  
-  const columnFilter = screen.getByTestId('column-filter');
-  userEvent.selectOptions(columnFilter, 'diameter');
-  const comparisonFilter = screen.getByTestId('comparison-filter');
-  userEvent.selectOptions(comparisonFilter, 'maior que');
-  const valueFilter = screen.getByTestId('value-filter');
-  userEvent.type(valueFilter, '100');
-  const filterButton = screen.getByTestId('button-filter');
-  userEvent.click(filterButton);
-  
-  const removeFiltersButton = screen.getByTestId('button-remove-filters');
-  userEvent.click(removeFiltersButton);
-  
-  expect(screen.queryByTestId('filtered-column')).toBeNull();
-  expect(screen.queryByTestId('filtered-comparison')).toBeNull();
-  expect(screen.queryByTestId('filtered-value')).toBeNull();
+  test('Botão "Remover Filtros" funciona corretamente', async () => {
+    render(<PlanetsProvider><App /></PlanetsProvider>)
+    
+    const columnFilter = screen.getByTestId('column-filter');
+    userEvent.selectOptions(columnFilter, 'diameter');
+    const comparisonFilter = screen.getByTestId('comparison-filter');
+    userEvent.selectOptions(comparisonFilter, 'maior que');
+    const valueFilter = screen.getByTestId('value-filter');
+    userEvent.type(valueFilter, '100');
+    const filterButton = screen.getByTestId('button-filter');
+    userEvent.click(filterButton);
+    
+    const removeFiltersButton = screen.getByTestId('button-remove-filters');
+    userEvent.click(removeFiltersButton);
+    
+    expect(screen.queryByTestId('filtered-column')).toBeNull();
+    expect(screen.queryByTestId('filtered-comparison')).toBeNull();
+    expect(screen.queryByTestId('filtered-value')).toBeNull();
+  });
 });
