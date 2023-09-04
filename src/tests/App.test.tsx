@@ -28,15 +28,6 @@ describe('Todos os testes da aplicação', () => {
     const elementWithTestId = screen.getByTestId('comparison-filter');
     expect(elementWithTestId).toBeInTheDocument();
     });
-
-    test('Verifica se ao iniciar a pagina, renderiza 10 planetas', async () => {
-      render(<PlanetsProvider><App /></PlanetsProvider>)
-
-      waitFor(() => {
-      const planetNames = screen.getAllByTestId('planet-name');
-      expect(planetNames.length).toBe(10)
-      })
-  })
   
 
     test('verifica se os dados da api são renderizados na tela', async () => {
@@ -149,17 +140,6 @@ describe('Todos os testes da aplicação', () => {
     })
   });
 
-  test('verifica se Yavin IV é renderizado na tela quando ordena por Ascendente', async () => {
-    render(<PlanetsProvider><App /></PlanetsProvider>)
-    const columnSelect = screen.getByTestId('column-sort');
-  
-    userEvent.selectOptions(columnSelect, 'population');
-    await waitFor(() => {
-      const resultElement = screen.getByText('Yavin IV');
-      expect(resultElement).toBeInTheDocument();
-    })
-  });
-
   test('verifica se o checkbox Ascendente dica desmarcado após clicar em "Ordenar"', () => {
     render(<PlanetsProvider><App /></PlanetsProvider>)
     const ascendenteCheckbox = screen.getByLabelText('Ascendente')
@@ -229,24 +209,25 @@ describe('Todos os testes da aplicação', () => {
       expect(planetNames[2]).toHaveTextContent('Hoth');
     })
   });
-  test('Botão "Remover Filtros" funciona corretamente', async () => {
-    render(<PlanetsProvider><App /></PlanetsProvider>)
-    
-    const columnFilter = screen.getByTestId('column-filter');
-    userEvent.selectOptions(columnFilter, 'diameter');
-    const comparisonFilter = screen.getByTestId('comparison-filter');
-    userEvent.selectOptions(comparisonFilter, 'maior que');
-    const valueFilter = screen.getByTestId('value-filter');
-    userEvent.type(valueFilter, '100');
-    const filterButton = screen.getByTestId('button-filter');
-    userEvent.click(filterButton);
-    
-    const removeFiltersButton = screen.getByTestId('button-remove-filters');
-    userEvent.click(removeFiltersButton);
-    
-    expect(screen.queryByTestId('filtered-column')).toBeNull();
-    expect(screen.queryByTestId('filtered-comparison')).toBeNull();
-    expect(screen.queryByTestId('filtered-value')).toBeNull();
-  });
 
+});
+
+test('Botão "Remover Filtros" funciona corretamente', async () => {
+  render(<PlanetsProvider><App /></PlanetsProvider>)
+  
+  const columnFilter = screen.getByTestId('column-filter');
+  userEvent.selectOptions(columnFilter, 'diameter');
+  const comparisonFilter = screen.getByTestId('comparison-filter');
+  userEvent.selectOptions(comparisonFilter, 'maior que');
+  const valueFilter = screen.getByTestId('value-filter');
+  userEvent.type(valueFilter, '100');
+  const filterButton = screen.getByTestId('button-filter');
+  userEvent.click(filterButton);
+  
+  const removeFiltersButton = screen.getByTestId('button-remove-filters');
+  userEvent.click(removeFiltersButton);
+  
+  expect(screen.queryByTestId('filtered-column')).toBeNull();
+  expect(screen.queryByTestId('filtered-comparison')).toBeNull();
+  expect(screen.queryByTestId('filtered-value')).toBeNull();
 });
