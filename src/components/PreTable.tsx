@@ -96,13 +96,18 @@ function PreTable() {
       const columnA = a[sorting.column as keyof PlanetType];
       const columnB = b[sorting.column as keyof PlanetType];
 
+      // if (columnA === 'unknown') {
+      //   return sorting.sort === 'ASC' ? 1 : -1;
+      // }
+
+      if (columnB === 'unknown') {
+        return sorting.sort === 'ASC' ? -1 : 1;
+      }
+
       if (sorting.sort === 'ASC') {
-        if (columnA === 'unknown') return 1;
-        if (columnB === 'unknown') return -1;
         return Number(columnA) - Number(columnB);
       }
-      if (columnA === 'unknown') return -1;
-      if (columnB === 'unknown') return 1;
+
       return Number(columnB) - Number(columnA);
     });
 
