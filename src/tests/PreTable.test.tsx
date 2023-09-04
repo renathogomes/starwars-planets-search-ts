@@ -42,3 +42,40 @@ test('Adiciona e remove filtro de população corretamente', async () => {
   });
 });
 
+test('Ordena planetas por diâmetro em ordem descendente', async () => {
+  render(<PlanetsProvider><PreTable /></PlanetsProvider>);
+
+  const columnSortSelect = screen.getByTestId('column-sort');
+  userEvent.selectOptions(columnSortSelect, 'diameter');
+
+  const columnSortDescRadio = screen.getByTestId('column-sort-input-desc');
+  userEvent.click(columnSortDescRadio);
+
+  waitFor(() => {
+    const planetNames = screen.getAllByTestId('planet-name');
+    expect(planetNames[0]).toHaveTextContent('Bespin');
+  });
+});
+
+
+test('Filtra planetas por período orbital corretamente', async () => {
+  render(<PlanetsProvider><PreTable /></PlanetsProvider>);
+
+  const columnFilterSelect = screen.getByTestId('column-filter');
+  userEvent.selectOptions(columnFilterSelect, 'orbital_period');
+
+  const comparisonFilterSelect = screen.getByTestId('comparison-filter');
+  userEvent.selectOptions(comparisonFilterSelect, 'menor que');
+
+  const valueFilterInput = screen.getByTestId('value-filter');
+  userEvent.type(valueFilterInput, '5000');
+
+  const filterButton = screen.getByTestId('button-filter');
+  userEvent.click(filterButton);
+
+  waitFor(() => {
+    const planetNames = screen.getAllByTestId('planet-name');
+    expect(planetNames.length).toBe(2);
+    expect(planetNames[0]).toHaveTextContent('Tatooine');
+  });
+});
