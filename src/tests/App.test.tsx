@@ -9,7 +9,7 @@ describe('Todos os testes da aplicação', () => {
 
   beforeEach(() => {
     global.fetch = vi.fn().mockResolvedValue({
-      json: async () => dataApi
+      json: async () => (dataApi)
     })
   });
 

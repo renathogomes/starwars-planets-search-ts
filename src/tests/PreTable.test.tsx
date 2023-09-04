@@ -18,13 +18,13 @@ test('Adiciona e remove filtro de população corretamente', async () => {
   render(<PlanetsProvider><PreTable /></PlanetsProvider>
   );
 
-  const columnFilterSelect = screen.getByTestId('column-filter');
-  const comparisonFilterSelect = screen.getByTestId('comparison-filter');
+  const columnFilter = screen.getByTestId('column-filter');
+  const comparisonFilter = screen.getByTestId('comparison-filter');
   const valueFilterInput = screen.getByTestId('value-filter');
   const filterButton = screen.getByTestId('button-filter');
   
-  userEvent.selectOptions(columnFilterSelect, 'population');
-  userEvent.selectOptions(comparisonFilterSelect, 'maior que');
+  userEvent.selectOptions(columnFilter, 'population');
+  userEvent.selectOptions(comparisonFilter, 'maior que');
   userEvent.type(valueFilterInput, '5000000');
   userEvent.click(filterButton);
   
@@ -43,8 +43,8 @@ test('Adiciona e remove filtro de população corretamente', async () => {
 test('Ordena planetas por diâmetro em ordem descendente', async () => {
   render(<PlanetsProvider><PreTable /></PlanetsProvider>);
 
-  const columnSortSelect = screen.getByTestId('column-sort');
-  userEvent.selectOptions(columnSortSelect, 'diameter');
+  const columnSort = screen.getByTestId('column-sort');
+  userEvent.selectOptions(columnSort, 'diameter');
 
   const columnSortDescRadio = screen.getByTestId('column-sort-input-desc');
   userEvent.click(columnSortDescRadio);
@@ -59,14 +59,14 @@ test('Ordena planetas por diâmetro em ordem descendente', async () => {
 test('Filtra planetas por período orbital corretamente', async () => {
   render(<PlanetsProvider><PreTable /></PlanetsProvider>);
 
-  const columnFilterSelect = screen.getByTestId('column-filter');
-  userEvent.selectOptions(columnFilterSelect, 'orbital_period');
+  const columnFilter = screen.getByTestId('column-filter');
+  userEvent.selectOptions(columnFilter, 'orbital_period');
 
   const comparisonFilterSelect = screen.getByTestId('comparison-filter');
   userEvent.selectOptions(comparisonFilterSelect, 'menor que');
 
-  const valueFilterInput = screen.getByTestId('value-filter');
-  userEvent.type(valueFilterInput, '5000');
+  const valueFilter = screen.getByTestId('value-filter');
+  userEvent.type(valueFilter, '5000');
 
   const filterButton = screen.getByTestId('button-filter');
   userEvent.click(filterButton);
