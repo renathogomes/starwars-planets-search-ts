@@ -252,4 +252,51 @@ describe('Todos os testes da aplicação', () => {
     expect(screen.queryByTestId('filtered-value')).toBeNull();
   });
 
+  test('Verifica o comportamento quando arrayFilter está vazio', () => {
+    render(<PlanetsProvider><App /></PlanetsProvider>)
+ 
+    const filterButton = screen.getByTestId('button-filter');
+    userEvent.click(filterButton);
+  
+    expect(screen.queryByTestId('filtered-column')).not.toBeInTheDocument();
+  });
+
+  test('Verifica ordenação ascendente', async () => {
+    render(<PlanetsProvider><App /></PlanetsProvider>)
+  
+    waitFor(() => {
+      const columnSort = screen.getByTestId('column-sort');
+      userEvent.selectOptions(columnSort, 'orbital_period');
+      const columnSortAsc = screen.getByTestId('column-sort-input-asc');
+      userEvent.click(columnSortAsc);
+    
+      const planetNames = screen.getAllByTestId('planet-name');
+      expect(planetNames[0]).toHaveTextContent('Yavin IV');
+      expect(planetNames[1]).toHaveTextContent('Tatooine');
+    })
+  });
+
+  test('Verifica se ao iniciar a pagina, renderiza 10 planetas', async () => {
+    render(<PlanetsProvider><App /></PlanetsProvider>)
+
+    waitFor(() => {
+      const planetNames = screen.getAllByTestId('planet-name');
+      expect(planetNames.length).toBe(10)
+    })
+  })
+
+  test('verifica a quantidade de planetas filtrados', async () => {
+    render(<PlanetsProvider><App /></PlanetsProvider>)
+      const columnSelect = screen.getByLabelText('Colunas:');
+      const comparisonSelect = screen.getByLabelText('Comparação:');
+      const valueInput = screen.getByLabelText('Valor:');
+  
+      userEvent.selectOptions(columnSelect, 'rotation_period');
+      userEvent.selectOptions(comparisonSelect, 'igual a');
+      userEvent.type(valueInput, '12');
+      await waitFor(() => {
+        const planetNames = screen.getAllByTestId('planet-name');
+        expect(planetNames.length).toBe(1)
+      })
+    })
 });
