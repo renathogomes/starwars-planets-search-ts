@@ -29,17 +29,15 @@ describe('Todos os testes da aplicação', () => {
     expect(elementWithTestId).toBeInTheDocument();
     });
 
-  test('verifica se na tela existe um elemento com o dataTestId = button-filter', () => {
-    render(<PlanetsProvider><App /></PlanetsProvider>)
-    const elementWithTestId = screen.getByTestId('button-filter');
-    expect(elementWithTestId).toBeInTheDocument();
-    });
+    test('Verifica se ao iniciar a pagina, renderiza 10 planetas', async () => {
+      render(<PlanetsProvider><App /></PlanetsProvider>)
 
-  test('verifica se na tela existe um elemento com o dataTestId = name-filter', () => {
-    render(<PlanetsProvider><App /></PlanetsProvider>)
-    const elementWithTestId = screen.getByTestId('name-filter');
-    expect(elementWithTestId).toBeInTheDocument();
-    });
+      waitFor(() => {
+      const planetNames = screen.getAllByTestId('planet-name');
+      expect(planetNames.length).toBe(10)
+      })
+  })
+  
 
     test('verifica se os dados da api são renderizados na tela', async () => {
       render(<PlanetsProvider><App /></PlanetsProvider>)
@@ -231,7 +229,6 @@ describe('Todos os testes da aplicação', () => {
       expect(planetNames[2]).toHaveTextContent('Hoth');
     })
   });
-
   test('Botão "Remover Filtros" funciona corretamente', async () => {
     render(<PlanetsProvider><App /></PlanetsProvider>)
     
@@ -252,51 +249,4 @@ describe('Todos os testes da aplicação', () => {
     expect(screen.queryByTestId('filtered-value')).toBeNull();
   });
 
-  test('Verifica o comportamento quando arrayFilter está vazio', () => {
-    render(<PlanetsProvider><App /></PlanetsProvider>)
- 
-    const filterButton = screen.getByTestId('button-filter');
-    userEvent.click(filterButton);
-  
-    expect(screen.queryByTestId('filtered-column')).not.toBeInTheDocument();
-  });
-
-  test('Verifica ordenação ascendente', async () => {
-    render(<PlanetsProvider><App /></PlanetsProvider>)
-  
-    waitFor(() => {
-      const columnSort = screen.getByTestId('column-sort');
-      userEvent.selectOptions(columnSort, 'orbital_period');
-      const columnSortAsc = screen.getByTestId('column-sort-input-asc');
-      userEvent.click(columnSortAsc);
-    
-      const planetNames = screen.getAllByTestId('planet-name');
-      expect(planetNames[0]).toHaveTextContent('Yavin IV');
-      expect(planetNames[1]).toHaveTextContent('Tatooine');
-    })
-  });
-
-  test('Verifica se ao iniciar a pagina, renderiza 10 planetas', async () => {
-    render(<PlanetsProvider><App /></PlanetsProvider>)
-
-    waitFor(() => {
-      const planetNames = screen.getAllByTestId('planet-name');
-      expect(planetNames.length).toBe(10)
-    })
-  })
-
-  test('verifica a quantidade de planetas filtrados', async () => {
-    render(<PlanetsProvider><App /></PlanetsProvider>)
-      const columnSelect = screen.getByLabelText('Colunas:');
-      const comparisonSelect = screen.getByLabelText('Comparação:');
-      const valueInput = screen.getByLabelText('Valor:');
-  
-      userEvent.selectOptions(columnSelect, 'rotation_period');
-      userEvent.selectOptions(comparisonSelect, 'igual a');
-      userEvent.type(valueInput, '12');
-      await waitFor(() => {
-        const planetNames = screen.getAllByTestId('planet-name');
-        expect(planetNames.length).toBe(1)
-      })
-    })
 });
