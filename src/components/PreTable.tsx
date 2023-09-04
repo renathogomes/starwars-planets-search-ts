@@ -11,6 +11,8 @@ type SortingType = {
 function PreTable() {
   const { planets, fetchPlanets, setPlanets } = usePlanets();
 
+  console.log(fetchPlanets);
+
   console.log(planets);
 
   const [valueFilter, setValueFilter] = useState(0);
@@ -42,7 +44,9 @@ function PreTable() {
 
   console.log(dataPlanets);
   useEffect(() => {
-    let result: PlanetType[] = planets;
+    let result: PlanetType[] = [...planets];
+
+    console.log(result);
 
     if (!arrayFilter.length) {
       setPlanets(planets);
@@ -54,9 +58,8 @@ function PreTable() {
               .filter((p: any) => Number(p[filter.column]) > Number(filter.value));
             break;
           case 'menor que':
-            result = result.filter(
-              (p: any) => Number(p[filter.column]) < Number(filter.value),
-            );
+            result = result
+              .filter((p: any) => Number(p[filter.column]) < Number(filter.value));
             break;
           case 'igual a':
             result = result.filter(
@@ -98,10 +101,6 @@ function PreTable() {
       const columnA = a[sorting.column as keyof PlanetType];
       const columnB = b[sorting.column as keyof PlanetType];
 
-      // if (columnA === 'unknown') {
-      //   return sorting.sort === 'ASC' ? 1 : -1;
-      // }
-
       if (columnB === 'unknown') {
         return sorting.sort === 'ASC' ? -1 : 1;
       }
@@ -129,7 +128,8 @@ function PreTable() {
           id="column"
           name="column"
           value={ column }
-          onChange={ (e) => setSorting({ ...sorting, column: e.target.value }) }
+          // onChange={ (e) => setSorting({ ...sorting, column: (e.target.value) }) }
+          onChange={ (e) => setColumn(e.target.value) }
           data-testid="column-filter"
         >
           { arrayColumn.map((columnOption) => (
