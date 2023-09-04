@@ -26,7 +26,8 @@ function Table({ planets, dataPlanets, sorting, handleSort }: PropsTable) {
               id="columnSort"
               value={ sorting.column }
               onChange={ (e) => handleSort(e.target.value, sorting.sort) }
-              data-testid="column-sort-select"
+              // data-testid="column-sort-select"
+              data-testid="column-sort"
             >
               {testOption.map((option) => (
                 <option

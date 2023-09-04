@@ -93,17 +93,17 @@ function PreTable() {
   const sortPlanets = () => {
     const sortedPlanets = [...planets].sort((a, b) => {
       console.log(planets);
-      const columnA = a[sorting.column];
-      const columnB = b[sorting.column];
+      const columnA = a[sorting.column as keyof PlanetType];
+      const columnB = b[sorting.column as keyof PlanetType];
 
       if (sorting.sort === 'ASC') {
         if (columnA === 'unknown') return 1;
         if (columnB === 'unknown') return -1;
-        return columnA - columnB;
+        return Number(columnA) - Number(columnB);
       }
       if (columnA === 'unknown') return -1;
       if (columnB === 'unknown') return 1;
-      return columnB - columnA;
+      return Number(columnB) - Number(columnA);
     });
 
     setPlanets(sortedPlanets);
