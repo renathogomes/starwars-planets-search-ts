@@ -19,17 +19,15 @@ test('Adiciona e remove filtro de população corretamente', async () => {
   );
 
   const columnFilterSelect = screen.getByTestId('column-filter');
-  userEvent.selectOptions(columnFilterSelect, 'population');
-
   const comparisonFilterSelect = screen.getByTestId('comparison-filter');
-  userEvent.selectOptions(comparisonFilterSelect, 'maior que');
-
   const valueFilterInput = screen.getByTestId('value-filter');
-  userEvent.type(valueFilterInput, '5000000');
-
   const filterButton = screen.getByTestId('button-filter');
+  
+  userEvent.selectOptions(columnFilterSelect, 'population');
+  userEvent.selectOptions(comparisonFilterSelect, 'maior que');
+  userEvent.type(valueFilterInput, '5000000');
   userEvent.click(filterButton);
-
+  
   const filterTag = screen.getByTestId('filter');
   expect(filterTag).toBeInTheDocument();
 
