@@ -162,4 +162,48 @@ describe('Todos os testes da aplicação', () => {
     })
   });
 
+  test('verifica se o checkbox Ascendente dica desmarcado após clicar em "Ordenar"', () => {
+    render(<PlanetsProvider><App /></PlanetsProvider>)
+    const ascendenteCheckbox = screen.getByLabelText('Ascendente')
+    const buttonOrdenar = screen.getByText('Ordenar')
+
+    userEvent.click(buttonOrdenar)
+    expect(ascendenteCheckbox).not.toBeChecked();
+
+  });
+
+  test('verifica se o checkbox Ascendente marcado antes de clicar em "Ordenar"', () => {
+    render(<PlanetsProvider><App /></PlanetsProvider>)
+    const ascendenteCheckbox = screen.getByLabelText('Ascendente')
+    expect(ascendenteCheckbox).toBeChecked();
+  })
+
+  test('Verifica se a Table tem 13 colunas', () => {
+    render(<PlanetsProvider><App /></PlanetsProvider>)
+    const table = screen.getByRole('table')
+
+    const th = table.querySelectorAll('thead th')
+    const td = table.querySelectorAll('tbody td')
+
+    const total = th.length + td.length -1
+
+    expect(total).toBe(13)
+  })
+
+  test('verifica se a os planetas estão ficando ordenados', async () => {
+    render(<PlanetsProvider><App /></PlanetsProvider>)
+    waitFor(() => {
+
+      const columnSort = screen.getByTestId('column-sort')
+      userEvent.selectOptions(columnSort, 'orbital_period')
+    
+      const columnSortDesc = screen.getByTestId('column-sort-input-desc')
+       userEvent.click(columnSortDesc);
+
+       const planetNames = screen.getAllByTestId('planet-name')
+       expect(planetNames[0]).toHaveTextContent('Tatooine')
+       expect(planetNames[1]).toHaveTextContent('Naboo')
+       expect(planetNames[2]).toHaveTextContent('Dagobah')
+    })
+  })
 });
