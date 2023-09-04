@@ -11,6 +11,8 @@ type SortingType = {
 function PreTable() {
   const { planets, fetchPlanets, setPlanets } = usePlanets();
 
+  console.log(planets);
+
   const [valueFilter, setValueFilter] = useState(0);
   const [nameFilter, setNameFilter] = useState('');
   const [column, setColumn] = useState('population');
@@ -38,9 +40,9 @@ function PreTable() {
       .toLowerCase()
       .includes(nameFilter.toLowerCase()));
 
+  console.log(dataPlanets);
   useEffect(() => {
     let result: PlanetType[] = planets;
-    console.log(arrayFilter, 'aaaa');
 
     if (!arrayFilter.length) {
       setPlanets(planets);

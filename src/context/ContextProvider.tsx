@@ -6,11 +6,12 @@ const url = 'https://swapi.dev/api/planets';
 
 export function PlanetsProvider({ children }: ContextProviderType) {
   const [planets, setPlanets] = useState<PlanetType[]>([]);
-  // const [globalFilter, setGlobalFilter] = useState<PlanetType[]>([]);
 
   const fetchPlanets = async () => {
     const response = await fetch(url);
     const dataJson = await response.json();
+    console.log(dataJson);
+
     delete dataJson.residents;
 
     const data = await dataJson.results;
