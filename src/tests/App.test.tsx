@@ -206,4 +206,50 @@ describe('Todos os testes da aplicação', () => {
        expect(planetNames[2]).toHaveTextContent('Dagobah')
     })
   })
+
+  test('Botão de ordenação funciona corretamente', async () => {
+    render(<PlanetsProvider><App /></PlanetsProvider>)
+    
+    waitFor(() => {
+
+      const columnSort = screen.getByTestId('column-sort')
+      userEvent.selectOptions(columnSort, 'orbital_period');
+      
+      const columnSortDesc = screen.getByTestId('column-sort-input-desc');
+      userEvent.click(columnSortDesc);
+     
+      const planetNames = screen.getAllByTestId('planet-name');
+      expect(planetNames[0]).toHaveTextContent('Tatooine');
+      expect(planetNames[1]).toHaveTextContent('Naboo');
+      expect(planetNames[2]).toHaveTextContent('Dagobah');
+      
+      const columnSortButton = screen.getByTestId('column-sort-button');
+      userEvent.click(columnSortButton);
+      
+      expect(planetNames[0]).toHaveTextContent('Bespin');
+      expect(planetNames[1]).toHaveTextContent('Yavin IV');
+      expect(planetNames[2]).toHaveTextContent('Hoth');
+    })
+  });
+
+  test('Botão "Remover Filtros" funciona corretamente', async () => {
+    render(<PlanetsProvider><App /></PlanetsProvider>)
+    
+    const columnFilter = screen.getByTestId('column-filter');
+    userEvent.selectOptions(columnFilter, 'diameter');
+    const comparisonFilter = screen.getByTestId('comparison-filter');
+    userEvent.selectOptions(comparisonFilter, 'maior que');
+    const valueFilter = screen.getByTestId('value-filter');
+    userEvent.type(valueFilter, '100');
+    const filterButton = screen.getByTestId('button-filter');
+    userEvent.click(filterButton);
+    
+    const removeFiltersButton = screen.getByTestId('button-remove-filters');
+    userEvent.click(removeFiltersButton);
+    
+    expect(screen.queryByTestId('filtered-column')).toBeNull();
+    expect(screen.queryByTestId('filtered-comparison')).toBeNull();
+    expect(screen.queryByTestId('filtered-value')).toBeNull();
+  });
+
 });
