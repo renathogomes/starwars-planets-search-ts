@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { usePlanets } from '../hook/usePlanets';
 import { PlanetType } from '../types';
 import Table from './Table';
+import styles from './PreTable.module.css';
 
 type SortingType = {
   column: string,
@@ -116,7 +117,7 @@ function PreTable() {
   };
 
   return (
-    <>
+    <div className={ styles.preTableContainer }>
       <form onSubmit={ handleSubmit }>
         <label htmlFor="column">Colunas:</label>
         <select
@@ -191,7 +192,7 @@ function PreTable() {
         sorting={ sorting }
         handleSort={ handleSort }
       />
-    </>
+    </div>
   );
 }
 

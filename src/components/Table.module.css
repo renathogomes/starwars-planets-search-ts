@@ -1,0 +1,15 @@
+.tableContainer {
+    background-color: red;
+    padding: 10px;
+}
+
+.tableFilter {
+    background-color: green;
+}
+
+.tableIndividual {
+    background-color: blue;
+    width: 100%;
+    border-collapse: collapse;
+
+}
