@@ -7,6 +7,8 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background-color: #333;
   height: 100vh;
+  display: flex;
+  align-items: end;
 }
 
 code {

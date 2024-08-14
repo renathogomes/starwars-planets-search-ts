@@ -66,7 +66,7 @@ function Table({ planets, dataPlanets, sorting, handleSort }: PropsTable) {
             Ordenar
           </button>
         </section>
-        <tr>
+        <tr className={ styles.titles }>
           <th>Name</th>
           <th>Rotation Period</th>
           <th>Orbital Period</th>
@@ -77,9 +77,9 @@ function Table({ planets, dataPlanets, sorting, handleSort }: PropsTable) {
           <th>Surface Water</th>
           <th>Population</th>
           <th>Films</th>
-          <th>Created</th>
-          <th>Edited</th>
-          <th>URL</th>
+          <th className={ styles.created }>Created</th>
+          <th className={ styles.edited }>Edited</th>
+          <th className={ styles.url }>URL</th>
         </tr>
       </thead>
       <tbody>
@@ -99,10 +99,10 @@ function Table({ planets, dataPlanets, sorting, handleSort }: PropsTable) {
               <td>{planet.terrain}</td>
               <td>{planet.surface_water}</td>
               <td>{planet.population}</td>
-              <td>{planet.films}</td>
-              <td>{planet.created}</td>
-              <td>{planet.edited}</td>
-              <td>{planet.url}</td>
+              <td className={ styles.film }>{planet.films}</td>
+              <td className={ styles.created }>{planet.created}</td>
+              <td className={ styles.edited }>{planet.edited}</td>
+              <td className={ styles.url }>{planet.url}</td>
             </tr>
           ))
         )}

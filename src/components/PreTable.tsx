@@ -118,7 +118,7 @@ function PreTable() {
 
   return (
     <div className={ styles.preTableContainer }>
-      <form onSubmit={ handleSubmit }>
+      <form onSubmit={ handleSubmit } className={ styles.preTableFilter }>
         <label htmlFor="column">Colunas:</label>
         <select
           id="column"
