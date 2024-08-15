@@ -165,14 +165,16 @@ function PreTable() {
           Filtrar
         </button>
       </form>
-      <label htmlFor="nameFilter">Nome:</label>
-      <input
-        id="nameFilter"
-        type="text"
-        value={ nameFilter }
-        data-testid="name-filter"
-        onChange={ (e) => setNameFilter(e.target.value) }
-      />
+      <section className={ styles.preTableName }>
+        <label htmlFor="nameFilter">Nome:</label>
+        <input
+          id="nameFilter"
+          type="text"
+          value={ nameFilter }
+          data-testid="name-filter"
+          onChange={ (e) => setNameFilter(e.target.value) }
+        />
+      </section>
 
       { arrayFilter.map((multFilter: any, index: number) => (
 

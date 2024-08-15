@@ -6,10 +6,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #333;
-  height: 100vh;
-  display: flex;
-  align-items: end;
-  color: #efefef;;
+ color: aliceblue;
 }
 
 code {

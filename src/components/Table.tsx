@@ -18,7 +18,7 @@ const testOption = [
 
 function Table({ planets, dataPlanets, sorting, handleSort }: PropsTable) {
   return (
-    <table className={ styles.tableContainer }>
+    <>
       <thead>
         <section className={ styles.tableFilter }>
           <label htmlFor="columnSort">Ordenar por:</label>
@@ -66,48 +66,50 @@ function Table({ planets, dataPlanets, sorting, handleSort }: PropsTable) {
             Ordenar
           </button>
         </section>
-        <tr className={ styles.titles }>
-          <th>Name</th>
-          <th>Rotation Period</th>
-          <th>Orbital Period</th>
-          <th>Diameter</th>
-          <th>Climate</th>
-          <th>Gravity</th>
-          <th>Terrain</th>
-          <th>Surface Water</th>
-          <th>Population</th>
-          <th>Films</th>
-          <th className={ styles.created }>Created</th>
-          <th className={ styles.edited }>Edited</th>
-          <th className={ styles.url }>URL</th>
-        </tr>
       </thead>
-      <tbody>
-        {planets.length < 1 ? (
-          <tr>
-            <td>Loading...</td>
+      <table className={ styles.tableContainer }>
+        <tbody className={ styles.conjunto }>
+          <tr className={ styles.titles }>
+            <th>Name</th>
+            <th>Rotation Period</th>
+            <th>Orbital Period</th>
+            <th>Diameter</th>
+            <th>Climate</th>
+            <th>Gravity</th>
+            <th>Terrain</th>
+            <th>Surface Water</th>
+            <th>Population</th>
+            <th>Films</th>
+            <th className={ styles.created }>Created</th>
+            <th className={ styles.edited }>Edited</th>
+            <th className={ styles.url }>URL</th>
           </tr>
-        ) : (
-          dataPlanets.map((planet) => (
-            <tr className={ styles.tableIndividual } key={ planet.name }>
-              <td data-testid="planet-name">{planet.name}</td>
-              <td>{planet.rotation_period}</td>
-              <td>{planet.orbital_period}</td>
-              <td>{planet.diameter}</td>
-              <td>{planet.climate}</td>
-              <td>{planet.gravity}</td>
-              <td>{planet.terrain}</td>
-              <td>{planet.surface_water}</td>
-              <td>{planet.population}</td>
-              <td className={ styles.film }>{planet.films}</td>
-              <td className={ styles.created }>{planet.created}</td>
-              <td className={ styles.edited }>{planet.edited}</td>
-              <td className={ styles.url }>{planet.url}</td>
+          {planets.length < 1 ? (
+            <tr>
+              <td>Loading...</td>
             </tr>
-          ))
-        )}
-      </tbody>
-    </table>
+          ) : (
+            dataPlanets.map((planet) => (
+              <tr className={ styles.tableIndividual } key={ planet.name }>
+                <td data-testid="planet-name" className={ styles.name }>{planet.name}</td>
+                <td className={ styles.rotation }>{planet.rotation_period}</td>
+                <td className={ styles.orbital }>{planet.orbital_period}</td>
+                <td className={ styles.diameter }>{planet.diameter}</td>
+                <td className={ styles.climate }>{planet.climate}</td>
+                <td className={ styles.gravity }>{planet.gravity}</td>
+                <td className={ styles.terrain }>{planet.terrain}</td>
+                <td className={ styles.surface }>{planet.surface_water}</td>
+                <td className={ styles.population }>{planet.population}</td>
+                <td className={ styles.film }>{planet.films}</td>
+                <td className={ styles.created }>{planet.created}</td>
+                <td className={ styles.edited }>{planet.edited}</td>
+                <td className={ styles.url }>{planet.url}</td>
+              </tr>
+            ))
+          )}
+        </tbody>
+      </table>
+    </>
   );
 }
 
